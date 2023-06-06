@@ -27,8 +27,7 @@
     "typeorm": "0.3.16"
   },
   "scripts": {
-    "start": "node index.ts",
-    "typeorm": "ts-node ./node_modules/typeorm/cli -d ./ormconfig.ts",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.ts\""
+    "start": "ts-node src/index.ts",
+    "typeorm": "ts-node ./node_modules/typeorm/cli -d ./ormconfig.ts"
   }
 }

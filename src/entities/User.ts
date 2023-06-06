@@ -1,10 +1,6 @@
 import { IsEmail, Max, Min } from "class-validator";
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-
-export enum UserType {
-  ADMIN = "admin",
-  CANDIDATE = "candidate",
-}
+import { UserType } from "../utils";
 
 @Entity({ name: "users" })
 export class User {
