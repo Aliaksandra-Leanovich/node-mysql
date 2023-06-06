@@ -5,29 +5,20 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-export const AppDataSource =
-  process.env.NODE_ENV === "test"
-    ? new DataSource({
-        type: "sqlite", //???
-        database: `storage/line.sqlite`,
-        logging: process.env.DB_LOGGING as any,
-        entities: [User],
-        synchronize: true,
-      })
-    : new DataSource({
-        type: "mysql",
-        host: process.env.DB_HOST,
-        port: Number(process.env.DB_PORT),
-        username: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_DATABASE,
-        synchronize: Boolean(process.env.DB_SYNCHRONIZE),
-        logging: process.env.DB_LOGGING as any,
-        entities: [User],
-        migrations: [],
-        migrationsTableName: "migrations",
-        subscribers: [],
-      });
+export const AppDataSource = new DataSource({
+  type: "mysql",
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  synchronize: Boolean(process.env.DB_SYNCHRONIZE),
+  logging: process.env.DB_LOGGING as any,
+  entities: [User],
+  migrations: [],
+  migrationsTableName: "migrations",
+  subscribers: [],
+});
 
 export const initializeDatabase = async function () {
   try {
