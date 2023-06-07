@@ -21,7 +21,6 @@ router.post("/login", async function (request, response) {
       return response.status(404).send({ message: Messages.noUserFound });
     }
 
-    // Check the password now
     const isSame = await utils.compareHash(
       request.body.password,
       user.password
@@ -34,10 +33,10 @@ router.post("/login", async function (request, response) {
         message: Messages.wrongPassword,
       });
     }
-    // Otherwise return payload
+
     response.send({
       email: user.email,
-      token: token, //?
+      token: token,
       id: user.id,
       role: user.user_type,
       message: Messages.logInSuccess,
@@ -52,7 +51,6 @@ router.post(
   body("email").isEmail(),
   body("password").isLength({ min: 8 }),
   async function (request: Request, response: Response) {
-    // Handle missing fields
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
       return response.status(400).json({ error: errors.array().toString() });
@@ -68,7 +66,6 @@ router.post(
         .send({ message: "User with sent email already exists." });
     }
 
-    // Inserting the row into the DB, but hash password first
     utils
       .hashPassword(request.body.password)
       .then(async (hash) => {

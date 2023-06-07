@@ -1,20 +1,22 @@
 import { DataSource } from "typeorm";
 import * as dotenv from "dotenv";
+import { User } from "./src/entities";
 
 dotenv.config();
 
-export const connectionSource = new DataSource({
+export const AppDataSource = new DataSource({
   migrationsTableName: "migrations",
   type: "mysql",
-  host: "localhost",
+  host: process.env.DB_HOST || "localhost",
   port: Number(process.env.DB_PORT) || 3307,
   username: process.env.DB_USER || "user",
   password: process.env.DB_PASSWORD || "root",
   database: process.env.DB_DATABASE || "db",
-  logging: false,
-  synchronize: false,
+  logging: process.env.DB_LOGGING as any,
+  synchronize: Boolean(process.env.DB_SYNCHRONIZE),
   name: "default",
-  entities: ["src/entities/*.ts"],
+  // entities: ["src/entities/*.ts"],
+  entities: [User],
   migrations: ["src/migrations/*.ts"],
   subscribers: ["src/subscriber/**/*{.ts,.js}"],
 });

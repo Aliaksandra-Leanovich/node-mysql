@@ -4,7 +4,6 @@ import { accessControlPolicy as userType } from "../config/accessControlPolicy";
 import { User } from "../entities";
 import { AppDataSource } from "../data-source";
 
-// Protecting path
 const authenticateJWT = async (
   request: Request,
   response: Response,
@@ -24,7 +23,6 @@ const authenticateJWT = async (
     const secret: string = String(process.env.AUTH_SECRET);
     const decoded: any = verify(token, secret);
 
-    // Apply Attribute-Based Access Control
     let user = await AppDataSource.getRepository(User).findOne({
       where: { id: decoded["userId"] },
     });
@@ -38,7 +36,6 @@ const authenticateJWT = async (
       return response.status(403).send({ error: "Resource not allowed." });
     }
 
-    // Attach request's identity to Request object
     request.body["candidate"] = user;
   } catch (err) {
     return response.status(401).send({ error: "Invalid Token" });
@@ -49,20 +46,17 @@ const authenticateJWT = async (
 
 export const generateJWT = (user: User) =>
   sign({ userId: user.id }, String(process.env.AUTH_SECRET), {
-    expiresIn: 24 * 60 * 60, // expires in 24 hours
+    expiresIn: 24 * 60 * 60,
   });
 
 export const verifyUserAuthorization = (
   user: User,
   request: Request
 ): Boolean => {
-  // Check whether user has appropriate role
   if (!(user.user_type in userType)) return false;
 
-  // Check HTTP attribute
   if (!userType[user.user_type].actions.includes(request.method)) return false;
 
-  // Check resource
   const resource = request.baseUrl.replace("/", "");
   const roleResources = userType[user.user_type].resources;
   const isAdmin = roleResources.includes("*");

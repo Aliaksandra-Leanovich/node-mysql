@@ -12,6 +12,6 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 
 app.use("/", AuthenticationRoutes);
-// app.use('/test', authenticateJWT, TestRoute) // for future
+// app.use('/test', authenticateJWT, TestRoute) // TBD
 
 export default app;
