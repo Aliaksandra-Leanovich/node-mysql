@@ -3,7 +3,7 @@ import { Policy } from "./types";
 export const accessControlPolicy: Policy = {
   admin: {
     actions: ["GET", "POST", "PUT", "DELETE"],
-    resources: ["*"], //TBD access to admin
+    resources: ["tests"], //create in controllers!
   },
 
   candidate: {
