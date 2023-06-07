@@ -5,7 +5,7 @@ import {
   OneToOne,
   JoinColumn,
 } from "typeorm";
-import { User } from "./User";
+import { User } from "./";
 import { CandidateLevel } from "../utils";
 
 @Entity({ name: "candidates" })
