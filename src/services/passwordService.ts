@@ -1,13 +1,13 @@
-import bcryptjs from "bcryptjs";
+const bcrypt = require("bcrypt");
 
 const utils = {
   hashPassword: function (plaintextPassword: string) {
-    const salt = bcryptjs.genSaltSync(10);
-    return bcryptjs._hash(plaintextPassword, salt);
+    const salt = bcrypt.genSaltSync(8);
+    return bcrypt.hash(plaintextPassword, salt);
   },
 
   compareHash: function (plaintextPassword: string, hash: string) {
-    return bcryptjs.compare(plaintextPassword, hash);
+    return bcrypt.compare(plaintextPassword, hash);
   },
 };
 

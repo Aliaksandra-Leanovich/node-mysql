@@ -1,9 +1,4 @@
-type Policy = {
-  [key: string]: {
-    actions: string[];
-    resources: string[];
-  };
-};
+import { Policy } from "./types";
 
 export const accessControlPolicy: Policy = {
   admin: {

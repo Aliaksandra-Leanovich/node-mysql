@@ -58,6 +58,16 @@ router.post(
       return response.status(400).json({ error: errors.array().toString() });
     }
 
+    const user = await userRepository.findOneBy({
+      email: `${request.body.email}`,
+    });
+
+    if (user) {
+      return response
+        .status(409)
+        .send({ message: "User with sent email already exists." });
+    }
+
     // Inserting the row into the DB, but hash password first
     utils
       .hashPassword(request.body.password)
