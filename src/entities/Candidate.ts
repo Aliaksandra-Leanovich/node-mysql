@@ -14,7 +14,7 @@ export class Candidate {
   id: number;
 
   @OneToOne(() => User)
-  @JoinColumn()
+  @JoinColumn({ name: "user_id" })
   user: number;
 
   @Column({
