@@ -26,16 +26,16 @@ export class User {
   })
   user_type: UserType;
 
-  @AfterInsert()
-  async createCandidate() {
-    if (this.user_type == UserType.CANDIDATE) {
-      const candidateRepository = AppDataSource.getRepository(Candidate);
+  // @AfterInsert()
+  // async createCandidate() {
+  //   if (this.user_type == UserType.CANDIDATE) {
+  //     const candidateRepository = AppDataSource.getRepository(Candidate);
 
-      const candidate = new Candidate();
-      candidate.user = this.id;
-      // candidate.level = UserType.JUNIOR; // Установите соответствующий уровень кандидата
+  //     const candidate = new Candidate();
+  //     candidate.user = this.id;
+  //     // candidate.level = UserType.JUNIOR; // Установите соответствующий уровень кандидата
 
-      await candidateRepository.save(candidate);
-    }
-  }
+  //     await candidateRepository.save(candidate);
+  //   }
+  // }
 }
