@@ -10,5 +10,5 @@ export class Test {
   duration: number;
 
   @Column()
-  level: CandidateLevel;
+  level: CandidateLevel | string;
 }
