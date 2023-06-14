@@ -4,6 +4,7 @@
   "main": "index.js",
   "type": "commonjs",
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^16.11.10",
     "nodemon": "^2.0.22",
     "ts-node": "10.7.0",

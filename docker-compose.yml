@@ -8,4 +8,21 @@ services:
     env_file:
       - .env.db
     ports:
-      - 3308:3306
+      - 3307:3306
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: at_backend
+    volumes:
+      - ./src:/app/src
+    ports:
+      - 4968:4968
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+volumes:
+  src:

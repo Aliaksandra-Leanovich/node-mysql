@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
-import jsonwebtoken, { sign } from "jsonwebtoken";
+import * as jsonwebtoken from "jsonwebtoken";
 import { accessControlPolicy as userType } from "../config/accessControlPolicy";
 import { User } from "../entities";
 import { AppDataSource } from "../data-source";
@@ -21,11 +21,14 @@ const authenticateJWT = async (
   try {
     const { verify } = jsonwebtoken;
     const secret: string = String(process.env.AUTH_SECRET);
+    console.log({secret})
     const decoded: any = verify(token, secret);
 
     let user = await AppDataSource.getRepository(User).findOne({
       where: { id: decoded["userId"] },
     });
+
+    console.log(user)
 
     if (!user) {
       return response.status(403).send({ error: "Resource not allowed." });
@@ -38,6 +41,7 @@ const authenticateJWT = async (
 
     request.body["candidate"] = user;
   } catch (err) {
+    console.log(err)
     return response.status(401).send({ error: "Invalid Token" });
   }
 
@@ -45,7 +49,7 @@ const authenticateJWT = async (
 };
 
 export const generateJWT = (user: User) =>
-  sign({ userId: user.id }, String(process.env.AUTH_SECRET), {
+  jsonwebtoken.sign({ userId: user.id }, String(process.env.AUTH_SECRET), {
     expiresIn: 24 * 60 * 60,
   });
 

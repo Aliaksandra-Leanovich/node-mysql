@@ -22,4 +22,8 @@ app.use("/users", authenticateJWT, UserRoutes);
 app.use("/questions", authenticateJWT, QuestionsRoutes);
 app.use("/answers", authenticateJWT, AnswersRoutes);
 
+app.on("error", function (error) {
+    console.error("An error occurred:", error);
+});
+
 export default app;
