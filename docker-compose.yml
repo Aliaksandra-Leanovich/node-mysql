@@ -7,22 +7,35 @@ services:
     container_name: at_db
     env_file:
       - .env.db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: test
+      MYSQL_PASSWORD: testpass
     ports:
-      - 3307:3306
+      - 3308:3306
+    networks:
+      - at
 
   web:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: at_backend
+    restart: always
     volumes:
-      - ./src:/app/src
+      - src:/app/src
     ports:
       - 4968:4968
     env_file:
       - .env
     depends_on:
       - db
+    networks:
+      - at
+
+networks:
+  at:
 
 volumes:
   src:
