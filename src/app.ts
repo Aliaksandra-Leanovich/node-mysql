@@ -6,7 +6,7 @@ import QuestionsRoutes from "./controllers/questions-controller";
 import AnswersRoutes from "./controllers/answers-controller";
 import express = require("express");
 import bodyParser = require("body-parser");
-import authenticateJWT from "./services/auth-service";
+import { authenticateJWT } from "./utils/authenticateJWT";
 
 const app = express();
 const cors = require("cors");

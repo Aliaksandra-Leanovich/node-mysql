@@ -7,7 +7,8 @@ import { generateJWT } from "../utils/generateJWT";
 import { validationResult } from "express-validator";
 import { Request, Response } from "express";
 
-const userRepository: Repository<User> = AppDataSource.getRepository(User);
+export const userRepository: Repository<User> =
+  AppDataSource.getRepository(User);
 
 export const loginHandler = async (request: Request, response: Response) => {
   try {
