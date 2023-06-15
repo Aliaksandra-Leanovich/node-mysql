@@ -1,7 +1,7 @@
-export { User } from "./User";
-export { Candidate } from "./Candidate";
-export { TestCandidate } from "./TestCandidates";
-export { Test } from "./Test";
-export { Questions } from "./Question";
-export { TestQuestions } from "./TestQuestion";
-export { Answers } from "./Answer";
+export { User } from "./user-entity";
+export { Candidate } from "./candidate-entity";
+export { TestCandidate } from "./testCandidates-entity";
+export { Test } from "./test-entity";
+export { Questions } from "./question-entity";
+export { TestQuestions } from "./testQuestion-entity";
+export { Answers } from "./answer-entity";

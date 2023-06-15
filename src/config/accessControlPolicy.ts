@@ -1,4 +1,4 @@
-import { Policy } from "./types";
+import { Policy } from "../types/types";
 
 export const accessControlPolicy: Policy = {
   admin: {

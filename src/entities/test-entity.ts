@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { CandidateLevel } from "../utils";
+import { CandidateLevel } from "../const";
 
 @Entity({ name: "tests" })
 export class Test {

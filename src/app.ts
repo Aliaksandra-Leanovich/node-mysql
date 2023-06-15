@@ -1,12 +1,12 @@
 import "reflect-metadata";
-import AuthenticationRoutes from "./controllers/authentication";
-import TestRoutes from "./controllers/test";
-import UserRoutes from "./controllers/users";
-import QuestionsRoutes from "./controllers/questions";
-import AnswersRoutes from "./controllers/answers";
+import AuthenticationRoutes from "./controllers/authentication-controller";
+import TestRoutes from "./controllers/tests-controller";
+import UserRoutes from "./controllers/users-controller";
+import QuestionsRoutes from "./controllers/questions-controller";
+import AnswersRoutes from "./controllers/answers-controller";
 import express = require("express");
 import bodyParser = require("body-parser");
-import authenticateJWT from "./services/authService";
+import authenticateJWT from "./services/auth-service";
 
 const app = express();
 const cors = require("cors");
@@ -23,7 +23,7 @@ app.use("/questions", authenticateJWT, QuestionsRoutes);
 app.use("/answers", authenticateJWT, AnswersRoutes);
 
 app.on("error", function (error) {
-    console.error("An error occurred:", error);
+  console.error("An error occurred:", error);
 });
 
 export default app;

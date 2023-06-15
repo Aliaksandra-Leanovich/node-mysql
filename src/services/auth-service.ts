@@ -1,16 +1,15 @@
-import { Request, Response, Router } from "express";
-import { body, validationResult } from "express-validator";
 import { Repository } from "typeorm";
-import { AppDataSource } from "../data-source";
+import { Messages } from "../const";
+import utils from "../utils/passwordService";
 import { User } from "../entities";
-import { generateJWT } from "../services/authService";
-import utils from "../services/passwordService";
-import { Messages } from "../utils";
+import { AppDataSource } from "../../ormconfig";
+import { generateJWT } from "../utils/generateJWT";
+import { validationResult } from "express-validator";
+import { Request, Response } from "express";
 
-const router = Router();
 const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
-router.post("/login", async function (request, response) {
+export const loginHandler = async (request: Request, response: Response) => {
   try {
     const user = await userRepository.findOne({
       where: { email: request.body.email },
@@ -44,18 +43,17 @@ router.post("/login", async function (request, response) {
   } catch (error) {
     response.status(500).send(error);
   }
-});
+};
 
-router.post(
-  "/signup",
-  body("email").isEmail(),
-  body("password").isLength({ min: 8 }),
-  async function (request: Request, response: Response) {
-    const errors = validationResult(request);
-    if (!errors.isEmpty()) {
-      return response.status(400).json({ error: errors.array().toString() });
-    }
+export const signupHandler = async (request: Request, response: Response) => {
+  const errors = validationResult(request);
+  const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
+  if (!errors.isEmpty()) {
+    return response.status(400).json({ error: errors.array().toString() });
+  }
+
+  try {
     const user = await userRepository.findOneBy({
       email: `${request.body.email}`,
     });
@@ -66,17 +64,11 @@ router.post(
         .send({ message: "User with sent email already exists." });
     }
 
-    utils
-      .hashPassword(request.body.password)
-      .then(async (hash) => {
-        request.body.password = hash;
-        let user: User = await userRepository.save(request.body);
-        response.send({ id: user.id, message: Messages.signUpSuccess });
-      })
-      .catch((err) => {
-        response.status(500).send({ error: `${err}` });
-      });
+    const hash = await utils.hashPassword(request.body.password);
+    request.body.password = hash;
+    const savedUser = await userRepository.save(request.body);
+    response.send({ id: savedUser.id, message: Messages.signUpSuccess });
+  } catch (error) {
+    response.status(500).send({ error: `${error}` });
   }
-);
-
-export default router;
+};

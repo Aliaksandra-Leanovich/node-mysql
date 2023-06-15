@@ -6,7 +6,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Questions, TestCandidate } from "./";
+import { Questions, TestCandidate } from ".";
 
 @Entity({ name: "answers" })
 export class Answers {

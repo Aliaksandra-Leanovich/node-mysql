@@ -5,8 +5,8 @@ import {
   OneToOne,
   JoinColumn,
 } from "typeorm";
-import { User } from "./";
-import { CandidateLevel } from "../utils";
+import { User } from ".";
+import { CandidateLevel } from "../const";
 
 @Entity({ name: "candidates" })
 export class Candidate {

@@ -1,6 +1,6 @@
 import { IsEmail, Max, Min } from "class-validator";
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { UserType } from "../utils";
+import { UserType } from "../const";
 
 @Entity({ name: "users" })
 export class User {

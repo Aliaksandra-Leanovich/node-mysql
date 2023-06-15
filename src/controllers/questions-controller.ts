@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { body, param, validationResult } from "express-validator";
 import { Questions } from "../entities";
-import { AppDataSource } from "../data-source";
+import { AppDataSource } from "../db/data-source";
 
 const router = Router();
 const questionsRepository = AppDataSource.getRepository(Questions);
