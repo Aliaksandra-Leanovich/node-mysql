@@ -1,9 +1,5 @@
-import { Request, Response, Router } from "express";
-import { body, param, validationResult } from "express-validator";
-import { In } from "typeorm";
-import { AppDataSource } from "../db/data-source";
-import { TestCandidate, Test } from "../entities";
-import { makeHandlerAsync } from "../utils/asyncFunctionHandler";
+import { Router } from "express";
+import { body, param } from "express-validator";
 import {
   createTestHandler,
   deleteTestHandler,
@@ -11,7 +7,8 @@ import {
   getTestDetailsHandler,
   getTestHandler,
   updateTestHandler,
-} from "../services/test-service";
+} from "../services";
+import { makeHandlerAsync } from "../utils";
 
 const router = Router();
 

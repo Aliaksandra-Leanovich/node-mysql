@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
-import { User } from "../entities/user-entity";
+import { User } from "../entities";
 import { UserType } from "../const";
-import utils from "../utils/passwordService";
+import { utils } from "../utils";
 
 export class CreateAdminUser1686709110631 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

@@ -4,8 +4,8 @@ import {
   getAnswerHandler,
   getAnswersHandler,
   postAnswerHandler,
-} from "../services/answer-service";
-import { makeHandlerAsync } from "../utils/asyncFunctionHandler";
+} from "../services";
+import { makeHandlerAsync } from "../utils";
 
 const router = Router();
 

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
-import { AppDataSource } from "../db/data-source";
+import { AppDataSource } from "../db";
 import { Answers, User } from "../entities";
 
 const answerRepository = AppDataSource.getRepository(Answers);

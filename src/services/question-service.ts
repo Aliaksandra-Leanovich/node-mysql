@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
-import { AppDataSource } from "../db/data-source";
+import { AppDataSource } from "../db";
 import { Questions } from "../entities";
 
 const questionsRepository = AppDataSource.getRepository(Questions);
@@ -33,7 +33,7 @@ export const getAllQuestions = (request: Request, response: Response) => {
       response.status(200).send(questions.map((question) => question.id));
     })
     .catch((error) => {
-      console.log(error);
+      response.status(500).send({ error: `${error}` });
     });
 };
 

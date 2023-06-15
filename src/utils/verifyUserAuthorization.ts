@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { accessControlPolicy as userType } from "../config/accessControlPolicy";
+import { accessControlPolicy as userType } from "../config";
 import { User } from "../entities";
 
 export const verifyUserAuthorization = (

@@ -1,11 +1,10 @@
-import { Repository } from "typeorm";
-import { Messages } from "../const";
-import utils from "../utils/passwordService";
-import { User } from "../entities";
-import { AppDataSource } from "../../ormconfig";
-import { generateJWT } from "../utils/generateJWT";
-import { validationResult } from "express-validator";
 import { Request, Response } from "express";
+import { validationResult } from "express-validator";
+import { Repository } from "typeorm";
+import { AppDataSource } from "../../ormconfig";
+import { Messages } from "../const";
+import { User } from "../entities";
+import { generateJWT, utils } from "../utils";
 
 export const userRepository: Repository<User> =
   AppDataSource.getRepository(User);

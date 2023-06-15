@@ -1,11 +1,10 @@
 import {
-  EventSubscriber,
   EntitySubscriberInterface,
+  EventSubscriber,
   InsertEvent,
 } from "typeorm";
-import { User } from "../entities/user-entity";
-import { Candidate } from "../entities/candidate-entity";
 import { UserType } from "../const";
+import { Candidate, User } from "../entities";
 
 @EventSubscriber()
 export class UserSubscriber implements EntitySubscriberInterface<User> {

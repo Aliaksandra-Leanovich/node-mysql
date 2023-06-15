@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 
-const utils = {
+export const utils = {
   hashPassword: function (plaintextPassword: string) {
     const salt = bcrypt.genSaltSync(8);
     return bcrypt.hash(plaintextPassword, salt);
@@ -10,5 +10,3 @@ const utils = {
     return bcrypt.compare(plaintextPassword, hash);
   },
 };
-
-export default utils;

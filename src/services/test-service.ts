@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import { validationResult } from "express-validator";
-import { AppDataSource } from "../db/data-source";
+import { AppDataSource } from "../db";
 import { Test, TestCandidate } from "../entities";
 
 const router = Router();
@@ -111,7 +111,6 @@ export const deleteTestHandler = (request: Request, response: Response) => {
       response.sendStatus(200);
     })
     .catch((error) => {
-      console.log(error);
-      response.sendStatus(400);
+      response.status(400).send({ error: `${error}` });
     });
 };

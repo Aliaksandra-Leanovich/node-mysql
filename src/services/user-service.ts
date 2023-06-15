@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator";
-import utils from "../utils/passwordService";
+import { utils } from "../utils";
 import { AppDataSource } from "../../ormconfig";
 import { User } from "../entities";
 import { Request, Response } from "express";

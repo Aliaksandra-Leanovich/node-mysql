@@ -6,8 +6,8 @@ import {
   getAllQuestions,
   getQuestionHandler,
   updateQuestionHandler,
-} from "../services/question-service";
-import { makeHandlerAsync } from "../utils/asyncFunctionHandler";
+} from "../services";
+import { makeHandlerAsync } from "../utils";
 
 const router = Router();
 

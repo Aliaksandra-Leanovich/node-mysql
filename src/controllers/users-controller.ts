@@ -1,11 +1,7 @@
 import { Router } from "express";
 import { body, param } from "express-validator";
-import {
-  deleteUserHandler,
-  getUserHandler,
-  putUserHandler,
-} from "../services/user-service";
-import { makeHandlerAsync } from "../utils/asyncFunctionHandler";
+import { deleteUserHandler, getUserHandler, putUserHandler } from "../services";
+import { makeHandlerAsync } from "../utils";
 
 const router = Router();
 

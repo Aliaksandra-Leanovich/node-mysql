@@ -1,6 +1,6 @@
 const redis = require("ioredis");
 
-const cache = (req, res, next) => {
+export const cache = (req, res, next) => {
   const { id } = req.params;
   redis.get(id, (error, result) => {
     if (error) throw error;
