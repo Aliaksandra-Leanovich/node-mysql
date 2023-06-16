@@ -11,23 +11,21 @@ export const userRepository: Repository<User> =
 
 export const loginHandler = async (request: Request, response: Response) => {
   try {
+    const { email, password } = request.body;
+
     const user = await userRepository.findOne({
-      where: { email: request.body.email },
+      where: { email },
       select: ["id", "email", "password", "user_type"],
     });
+
+    const isSame = await utils.compareHash(password, user.password);
+    const token = generateJWT(user);
 
     if (!user) {
       return response.status(404).send({ message: Messages.noUserFound });
     }
 
-    const isSame = await utils.compareHash(
-      request.body.password,
-      user.password
-    );
-
-    const token = generateJWT(user);
-
-    if (isSame === false) {
+    if (!isSame) {
       return response.status(403).send({
         message: Messages.wrongPassword,
       });
@@ -35,7 +33,7 @@ export const loginHandler = async (request: Request, response: Response) => {
 
     response.send({
       email: user.email,
-      token: token,
+      token,
       id: user.id,
       role: user.user_type,
       message: Messages.logInSuccess,
@@ -47,26 +45,30 @@ export const loginHandler = async (request: Request, response: Response) => {
 
 export const signupHandler = async (request: Request, response: Response) => {
   const errors = validationResult(request);
-  const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
   if (!errors.isEmpty()) {
     return response.status(400).json({ error: errors.array().toString() });
   }
 
   try {
-    const user = await userRepository.findOneBy({
-      email: `${request.body.email}`,
+    const { email, password } = request.body;
+
+    const existingUser = await userRepository.findOne({
+      where: { email },
     });
 
-    if (user) {
+    if (existingUser) {
       return response
         .status(409)
         .send({ message: "User with sent email already exists." });
     }
 
-    const hash = await utils.hashPassword(request.body.password);
-    request.body.password = hash;
-    const savedUser = await userRepository.save(request.body);
+    const hash = await utils.hashPassword(password);
+    const savedUser = await userRepository.save({
+      email,
+      password: hash,
+    });
+
     response.send({ id: savedUser.id, message: Messages.signUpSuccess });
   } catch (error) {
     response.status(500).send({ error: `${error}` });

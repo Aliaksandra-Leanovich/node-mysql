@@ -1,5 +1,5 @@
 export const makeHandlerAsync = (handler) => {
-  return (req, res, next) => {
-    handler(req, res, next).catch(next);
+  return (request, response, next) => {
+    handler(request, response, next).catch(next);
   };
 };

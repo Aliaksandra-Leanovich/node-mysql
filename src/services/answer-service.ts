@@ -11,6 +11,7 @@ export const postAnswerHandler = async (
   response: Response
 ) => {
   const errors = validationResult(request);
+
   if (!errors.isEmpty()) {
     return response.status(400).json({ errors: errors.array() });
   }
@@ -18,14 +19,14 @@ export const postAnswerHandler = async (
   let answer: Answers = new Answers();
   answer = { ...answer, ...request.body };
 
-  // Attach candidate
   const existingCandidate = await userRepository.findOne({
     where: { id: request.body.id },
   });
 
-  // if (existingCandidate) {
-  //     answer.testcandidate_id = existingCandidate.id;
-  // }
+  if (existingCandidate) {
+    //@ts-ignore
+    answer.testcandidate_id = existingCandidate.id;
+  }
 
   answerRepository
     .save(answer)
@@ -37,26 +38,34 @@ export const postAnswerHandler = async (
     });
 };
 
-export const getAnswersHandler = (request: Request, response: Response) => {
-  answerRepository
-    .find({
-      take: 50,
-      //   relations: [""],
-    })
-    .then((answer) => response.send(answer))
-    .catch((err) => {
-      response.status(404).send({ error: "Could not find any answers." });
-    });
+export const getAnswersHandler = async (
+  request: Request,
+  response: Response
+) => {
+  try {
+    const answers = await answerRepository.find({ take: 50 });
+    response.send(answers);
+  } catch (error) {
+    response.sendStatus(404).send({ error: "Could not find any answers." });
+  }
 };
 
-export const getAnswerHandler = (request: Request, response: Response) => {
-  answerRepository
-    .findOne({
+export const getAnswerHandler = async (
+  request: Request,
+  response: Response
+) => {
+  try {
+    const answer = await answerRepository.findOne({
       where: { id: Number(request.params.id) },
       relations: ["testcandidates", "questions"],
-    })
-    .then((new_answer) => {
-      response.status(200).send(new_answer);
-    })
-    .catch((error) => response.status(400).send({ error: error }));
+    });
+
+    if (!answer) {
+      return response.sendStatus(404).send({ error: "Answer not found." });
+    }
+
+    response.status(200).send(answer);
+  } catch (error) {
+    response.sendStatus(400).send({ error: error.message });
+  }
 };

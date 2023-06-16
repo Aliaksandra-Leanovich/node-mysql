@@ -5,82 +5,101 @@ import { Questions } from "../entities";
 
 const questionsRepository = AppDataSource.getRepository(Questions);
 
-export const createQuestionHandler = (request: Request, response: Response) => {
+export const createQuestionHandler = async (
+  request: Request,
+  response: Response
+) => {
   const errors = validationResult(request);
+
   if (!errors.isEmpty()) {
     return response.status(400).json({ errors: errors.array() });
   }
 
-  let question: Questions = new Questions();
-  question = { ...question, ...request.body };
+  let question: Questions = request.body;
 
-  // Persist to DB
-  questionsRepository
-    .save(question)
-    .then((question) => {
-      response.send(question);
-    })
-    .catch((err) => {
-      response.status(500).send({ error: `${err}` });
-    });
+  try {
+    const newQuestion = await questionsRepository.save(question);
+    response.send(newQuestion);
+  } catch (error) {
+    response.status(500).send({ error: `${error}` });
+  }
 };
 
 // Get All
-export const getAllQuestions = (request: Request, response: Response) => {
-  questionsRepository
-    .find({ take: 55 })
-    .then((questions) => {
-      response.status(200).send(questions.map((question) => question.id));
-    })
-    .catch((error) => {
-      response.status(500).send({ error: `${error}` });
-    });
+export const getAllQuestions = async (request: Request, response: Response) => {
+  try {
+    const questions = await questionsRepository.find({ take: 55 });
+    const questionIds = questions.map((question) => question.id);
+    response.status(200).send(questionIds);
+  } catch (error) {
+    response.status(500).send({ error: `${error}` });
+  }
 };
 
 // Get a single entity
-export const getQuestionHandler = (request: Request, response: Response) => {
-  questionsRepository
-    .findOne({
+export const getQuestionHandler = async (
+  request: Request,
+  response: Response
+) => {
+  try {
+    const question = await questionsRepository.findOne({
       where: { id: Number(request.params.id) },
       relations: ["testquestions", "answers"],
-    })
-    .then(async (question) => {
-      response.status(200).send(question);
-    })
-    .catch((error) => response.status(400).send({ error: error }));
+    });
+    response.status(200).send(question);
+  } catch (error) {
+    response.status(400).send({ error });
+  }
 };
-
 // Get single entity
-export const updateQuestionHandler = (request: Request, response: Response) => {
+export const updateQuestionHandler = async (
+  request: Request,
+  response: Response
+) => {
   const errors = validationResult(request);
+
   if (!errors.isEmpty()) {
     return response.status(400).json({ errors: errors.array() });
   }
 
-  questionsRepository
-    .findOne({
+  try {
+    const question = await questionsRepository.findOne({
       where: { id: Number(request.params.id) },
-    })
-    .then(async (question) => {
-      if (!question) throw Error("Question does not exist.");
-      // Update record
-      const existingQuestion = await questionsRepository.preload(question);
-      question = await questionsRepository.save({
-        ...existingQuestion,
-        ...request.body,
-      });
-      response.status(200).send(question);
-    })
-    .catch((error) => response.status(400).send({ error: error }));
+    });
+
+    if (!question) {
+      throw new Error("Question does not exist.");
+    }
+
+    const existingQuestion = await questionsRepository.preload(question);
+    const updatedQuestion = await questionsRepository.save({
+      ...existingQuestion,
+      ...request.body,
+    });
+
+    response.status(200).send(updatedQuestion);
+  } catch (error) {
+    response.status(400).send({ error: error.message });
+  }
 };
 
 // Delete a single entity
-export const deleteQuestionHandler = (request: Request, response: Response) => {
-  questionsRepository
-    .findOne({ where: { id: Number(request.params.id) } })
-    .then(async (question) => {
-      questionsRepository.delete({ id: Number(question?.id) });
-      response.sendStatus(200);
-    })
-    .catch(() => response.sendStatus(400));
+export const deleteQuestionHandler = async (
+  request: Request,
+  response: Response
+) => {
+  try {
+    const question = await questionsRepository.findOne({
+      where: { id: Number(request.params.id) },
+    });
+
+    if (!question) {
+      return response.sendStatus(400);
+    }
+
+    await questionsRepository.delete({ id: question.id });
+    response.sendStatus(200);
+  } catch (error) {
+    response.sendStatus(400);
+  }
 };

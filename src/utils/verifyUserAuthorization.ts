@@ -13,8 +13,8 @@ export const verifyUserAuthorization = (
   const resource = request.baseUrl.replace("/", "");
   const roleResources = userType[user.user_type].resources;
   const isAdmin = roleResources.includes("*");
-
   const canAccessResource = roleResources.includes(resource);
+
   if (!isAdmin && !canAccessResource) return false;
 
   return true;

@@ -17,12 +17,11 @@ export const authenticateJWT = async (
   if (!token) {
     return response.status(403).send("A token is required for authentication");
   }
+
   try {
     const { verify } = jsonwebtoken;
     const secret: string = String(process.env.AUTH_SECRET);
-
     const decoded: any = verify(token, secret);
-
     let user = await AppDataSource.getRepository(User).findOne({
       where: { id: decoded["userId"] },
     });
