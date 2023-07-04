@@ -7,23 +7,24 @@ const router = Router();
 const testRepository = AppDataSource.getRepository(Test);
 const testCandidateRepository = AppDataSource.getRepository(TestCandidate);
 
-export const createTestHandler = (request: Request, response: Response) => {
-  const errors = validationResult(request);
-  if (!errors.isEmpty()) {
-    return response.status(400).json({ errors: errors.array() });
+export const createTestHandler = async (
+  request: Request,
+  response: Response
+) => {
+  try {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      return response.status(400).json({ errors: errors.array() });
+    }
+
+    let test: Test = new Test();
+    test = { ...test, ...request.body };
+
+    const newTest = await testRepository.save(test);
+    response.send(newTest);
+  } catch (error) {
+    response.sendStatus(500).send({ error: `${error}` });
   }
-
-  let test: Test = new Test();
-  test = { ...test, ...request.body };
-
-  testRepository
-    .save(test)
-    .then((new_test) => {
-      response.send(new_test);
-    })
-    .catch((err) => {
-      response.status(500).send({ error: `${err}` });
-    });
 };
 
 export const getTestHandler = (request: Request, response: Response) => {
