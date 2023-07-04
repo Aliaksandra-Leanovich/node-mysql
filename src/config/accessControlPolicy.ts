@@ -1,13 +1,13 @@
-import { Policy } from "./types";
+import { Policy } from "../types/types";
 
 export const accessControlPolicy: Policy = {
   admin: {
     actions: ["GET", "POST", "PUT", "DELETE"],
-    resources: ["*"], //TBD access to admin
+    resources: ["*"],
   },
 
   candidate: {
     actions: ["GET", "POST", "PUT"],
-    resources: ["*"],
+    resources: ["tests", "users"],
   },
 };
