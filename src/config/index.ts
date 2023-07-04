@@ -1,0 +1,1 @@
+export { accessControlPolicy } from "./accessControlPolicy";
