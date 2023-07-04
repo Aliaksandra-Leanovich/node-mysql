@@ -7,15 +7,26 @@ dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: "mysql",
-  host: process.env.DB_HOST || "127.0.0.1",
-  port: Number(process.env.DB_PORT) || 3307,
-  username: process.env.DB_USER || "user",
-  password: process.env.DB_PASSWORD || "root",
-  database: process.env.DB_DATABASE || "db",
-  synchronize: true,
-  logging: false,
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  synchronize: Boolean(process.env.DB_SYNCHRONIZE),
+  logging: process.env.DB_LOGGING as any,
   entities: [User],
   migrations: [],
   migrationsTableName: "migrations",
   subscribers: [],
 });
+
+export const initializeDatabase = async function () {
+  try {
+    if (!AppDataSource.isInitialized) {
+      await AppDataSource.initialize();
+      console.log("Database connection initialized");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

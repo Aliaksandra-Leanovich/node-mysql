@@ -6,12 +6,7 @@ import {
   JoinColumn,
 } from "typeorm";
 import { User } from "./User";
-
-export enum CandidateLevel {
-  JUNIOR = "junior",
-  MIDDLE = "middle",
-  SENIOR = "senior",
-}
+import { CandidateLevel } from "../utils";
 
 @Entity({ name: "candidates" })
 export class Candidate {
