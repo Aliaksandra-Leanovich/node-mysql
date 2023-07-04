@@ -4,6 +4,7 @@
   "main": "index.js",
   "type": "commonjs",
   "devDependencies": {
+    "@types/ioredis": "^4.28.10",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^16.11.10",
     "nodemon": "^2.0.22",
