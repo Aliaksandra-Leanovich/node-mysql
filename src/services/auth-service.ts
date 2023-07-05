@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { Repository } from "typeorm";
-import { AppDataSource } from "../../ormconfig";
+import { AppDataSource } from "../db";
 import { Messages } from "../const";
 import { User } from "../entities";
 import { generateJWT, utils } from "../utils";
