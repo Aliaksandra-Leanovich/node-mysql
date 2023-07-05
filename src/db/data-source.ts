@@ -6,18 +6,19 @@ import { UserSubscriber } from "../subscribers";
 dotenv.config();
 
 export const AppDataSource = new DataSource({
+  migrationsTableName: "migrations",
   type: "mysql",
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  username: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
-  synchronize: Boolean(process.env.DB_SYNCHRONIZE),
+  host: process.env.DB_HOST || "localhost",
+  port: Number(process.env.DB_PORT) || 3307,
+  username: process.env.DB_USER || "user",
+  password: process.env.DB_PASSWORD || "root",
+  database: process.env.DB_DATABASE || "db",
   logging: process.env.DB_LOGGING as any,
+  synchronize: Boolean(process.env.DB_SYNCHRONIZE),
+  name: "default",
   entities: [__dirname + "/../**/*.entity.{js,ts}"],
   migrations: ["src/migrations/*.ts"],
-  migrationsTableName: "migrations",
-  subscribers: [UserSubscriber],
+  subscribers: ["src/subscribers/**/*{.ts,.js}"],
 });
 
 const userSubscriber = new UserSubscriber();
