@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
 import { utils } from "../utils";
-import { AppDataSource } from "../../ormconfig";
+import { AppDataSource } from "../db";
 import { User } from "../entities/user-entity";
 import { Request, Response } from "express";
 import { Repository } from "typeorm";
