@@ -8,4 +8,6 @@ COPY . .
 
 RUN npm install
 
-CMD ["npm", "start"]
+RUN npm start
+
+CMD ["npm", "run", "typeorm", "migration:run"] 
