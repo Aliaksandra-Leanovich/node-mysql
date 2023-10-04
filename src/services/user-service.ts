@@ -64,3 +64,24 @@ export const deleteUserHandler = (request: Request, response: Response) => {
     })
     .catch((error) => response.sendStatus(400));
 };
+
+export const checkAdminHandler = async (
+  request: Request,
+  response: Response
+) => {
+  try {
+    const user = await userRepository.findOne({
+      where: { id: Number(request.params.id) },
+    });
+
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+
+    const isAdmin = user.user_type === "admin";
+
+    response.status(200).send({ isAdmin });
+  } catch (error) {
+    response.status(400).send({ error: error.message });
+  }
+};
